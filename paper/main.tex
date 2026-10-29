@@ -1,0 +1,1577 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\PT}{\mathcal{PT}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\wt}{\widetilde{k}}
+
+\title{Every exorcism has a price:\\
+ghost removal as survival conditioning,\\
+from Maldacena's boundary condition to the pole sheet}
+
+\author{Jonathan Torkelson\\[2pt]
+\small Embeddetech, Inc., Tulsa, Oklahoma, USA\\
+\small\texttt{jtorkelson@embeddetech.com}}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent\textbf{Draft --- not for circulation.}\medskip
+
+\noindent
+A higher-derivative (ghost) theory can be made ghost-free by a
+choice: a boundary condition, a contour, a norm. The companion papers
+of this series established a currency in which such choices can be
+priced: a quantum evolution admits an ordinary
+(``beable'') sub-stochastic process whenever its survival amplitude
+stays bounded---divisor negativity then marking indivisibility rather
+than forcing conditioning---and only when the amplitude grows without
+bound does the dynamics survive solely as a \emph{survival-conditioned}
+process---which, for the coupled ghost realizations priced here, is the
+terminal-indivisibility class, with a strictly negative generator
+floor (unboundedness alone forces conditioning but not terminality: a
+decoupled growing mode stays divisible). This paper applies that currency to ghost \emph{removal}. The
+thesis: every standard exorcism---boundary conditions that project the
+ghost out, and propagator prescriptions that redefine its pole---is
+survival conditioning in disguise, or buys its way out in another
+trilemma currency; for the boundary-condition removals and the
+Feynman route that price is computed here.
+Three results. (i)~\emph{Maldacena's future boundary condition}
+(conformal $\to$ Einstein gravity) is, mode by mode, a Gaussian effect
+$\mathcal{M}$ (regularized $E_{\sigma}$) on the Ostrogradski velocity variable of a detuned
+Pais--Uhlenbeck proxy whose detuning $\delta$ represents the de~Sitter
+$\Delta=3/\Delta=2$ splitting. Its price sheet is closed form:
+survival $p=[1+1/(2\sigma^{2}\delta)]^{-1/2}\xrightarrow{\sigma\to0}\sigma\sqrt{2\delta}$,
+and Einstein-vacuum fidelity of the delivered state
+$F=2\sqrt{\alpha\omega_{1}}/(\alpha+\omega_{1})\simeq2\sqrt{\omega_{2}\delta}$ (with
+$\alpha=\omega_{1}\omega_{2}\delta$, in units $\omega_{1}=1$).
+Both collapse at the conformal (Minkowski, $\delta\to0$) point---the
+known flat-space obstruction, now priced; the convention-free content
+is the survival collapse and the delivered state's absolute
+$\delta^{-1/2}$ width divergence, the fidelity reading the latter
+against a fixed Einstein-vacuum reference. (ii)~The
+\emph{Hell--L\"ust--Zoupanos two-condition variant} $\mathcal{M}'$ fixes a
+canonically conjugate pair ($\dot h$ and the conjugate combination
+$\ddot h+\omega_{1}^{2}h$, $[q_{2},O_{2}]=\ii$), so $\mathcal{M}'$ is Heisenberg-limited: it
+pays the same leading $\sigma\sqrt{2\delta}$ survival power plus an
+$O(1)$ ordering/phase-space-cell surcharge, and what the surcharge
+buys is not a cheaper exorcism but a more general one---the full
+two-parameter Einstein solution with no in-state restriction. The
+$\delta\to0$ collapse is not evaded. (iii)~\emph{The pole sheet is
+readable in the divisor}: by Bochner's theorem a second-sheet
+resonance (positive spectral measure) has $|A(t)|\le1$ and survives as
+an \emph{unconditioned} sub-stochastic process (its divisor negativity
+transient when the amplitude is eventually monotone decreasing), while a
+first-sheet ghost pair (a discrete
+complex-conjugate pole pair off the real axis) has unbounded $|A(t)|$
+in states overlapping the growing leg, so conditioning
+is \emph{mandatory}; for the dimer realization it is terminal, with the
+generator floor of the first companion paper. Buoninfante's multi-particle masking law
+$\sinh^{2}(\Gamma t/2)$ is exactly the time dependence of the
+cross-population of the terminal-class (conditioning-mandatory) dimer
+(with $\wt=\Gamma/2$), up
+to the normalization $(\kappa/\wt)^{2}$, and his ghost-prescription
+taxonomy (Feynman
+ghost / anti-Feynman / fakeon) maps onto the trilemma currencies of
+the series: sample space, causal order, silence. Unstable particles
+survive unconditioned; ghosts survive only conditioned---and every
+way of pretending otherwise pays, measurably, in one currency or
+another.
+\end{abstract}
+
+\newpage
+\begin{quote}
+\small\noindent\textbf{Note on provenance.} This manuscript is an
+experiment in AI-conducted research as much as a physics paper. The
+project began when the author asked the large language model Claude
+Fable~5 (Anthropic): \emph{``Is it not possible that the antilinear
+PT/time-reversal symmetry element could maybe predict indivisible
+non-Markovian processes?''} Everything that followed was performed by
+the model: the research program, the theorems and proofs, the numerical
+experiments, the literature search, and this text. The model was
+repeatedly prompted to attack its own results adversarially and to
+search for prior work. The author, a professional engineer rather than
+a physicist, directed and reviewed the sessions but makes no claim to
+comprehension of the findings, and is circulating the manuscript for
+independent review by professional physicists. Accordingly, nothing
+here should be taken on trust: every result is stated with the proof
+it actually has---closed-form derivations where they exist, and
+numerically established claims labeled as such---and every numerical
+claim is reproducible from the public scripts (see Code availability);
+the originating conversation, project briefing, and full research
+notebook are preserved in the program's hub repository,
+\url{https://github.com/embeddetech/ghosts-program}.
+\end{quote}
+
+\newpage
+\tableofcontents
+
+%=====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Ghosts are removed, in the literature, in two broad ways. The first
+is by \emph{boundary condition}: one imposes conditions at a future
+(or asymptotic) boundary that the ghost modes fail, so that only the
+healthy sector survives. The paradigm is Maldacena's derivation of
+Einstein gravity from conformal gravity \cite{Maldacena2011}: the
+fourth-order graviton equation has four solutions per mode, a
+positive-frequency condition in the far past halves them, and a
+Neumann condition $\dot g=0$ at the future boundary halves them
+again, leaving exactly the Einstein graviton; at tree level the
+conformal-gravity wavefunctional evaluated on Neumann data reproduces
+the (renormalized) Bunch--Davies wavefunctional of Einstein gravity.
+A recent variant by Hell, L\"ust, and Zoupanos \cite{HLZ} keeps the
+Neumann condition but adds a second future condition on $\ddot h$ and
+drops the in-state restriction, aiming at the \emph{general} Einstein
+solution. The second removal is by \emph{prescription}: one keeps the
+ghost in the propagator but redefines how its pole is handled---the
+Feynman ghost, the anti-Feynman (advanced-arrow) ghost, and Anselmi's
+fakeon are the three canonical choices, recently organized into a
+sharp taxonomy by Buoninfante \cite{BuoninfanteP1,BuoninfanteP2,%
+BuoninfanteP3} and disputed by Anselmi, Briscese, Calcagni, and
+Modesto \cite{Anselmi2025}, with the Donoghue--Menezes ``Merlin
+mode'' treatment \cite{DonoghueMenezes} occupying a related corner.
+
+The companion papers of this series supply a currency in which such
+removals can be priced rather than merely asserted. The foundational
+paper \cite{indivisible} shows that a non-unitary or higher-derivative
+quantum evolution admits an ordinary (``beable'') sub-stochastic
+process---definite configurations, nonnegative transition
+probabilities---whenever its survival amplitude stays bounded; the
+two-time \emph{divisor}
+$M(t_{2},t_{1})=\Gamma(t_{2})\Gamma(t_{1})^{-1}$ of its transition
+matrices staying entrywise nonnegative on $[t_{1},t_{2}]$ marks the
+process \emph{divisible} there, and divisor negativity marks
+indivisibility, not non-existence. When the negativity is only
+transient, the process is indivisible but ordinary. Only when the
+amplitude grows without bound---so that no unconditioned sub-stochastic
+process exists---does the dynamics survive solely as a
+\emph{survival-conditioned} process, which for the coupled ghost
+realizations treated here is the terminal-indivisibility class
+(permanent divisor negativity past a critical time, the conditioned
+generator pinned at a strictly negative floor), in which every
+probability is conditioned on an ensemble that is itself being consumed.
+(Unboundedness by itself forces the conditioning but not the
+terminality---a decoupled mode that merely grows stays divisible; the
+terminal floor is a feature of the coupling.) The
+trilemma companion \cite{choosing} then prices the field-theory
+options: a coupled-ghost theory keeps at most two of \{coupled
+ghosts, empirical Lorentz invariance, definite configurations\} at
+tree level, and \cite{instantaneous} makes the Lorentz cost concrete
+through the boost-orbit measure of ghost vacuum decay.
+
+The Ostrogradski ghost of a higher-derivative theory is, on this
+view, not a calculational error to be deleted but a structural
+feature that must be paid for. This paper's thesis is that ghost
+removal itself belongs on that price sheet:
+\begin{quote}
+\emph{Every standard exorcism is survival conditioning in disguise,
+or buys its way out in another trilemma currency; for the
+boundary-condition removals and the Feynman route that price is
+computed here.}
+\end{quote}
+For boundary-condition removals the statement is nearly literal: a
+future boundary condition that the prepared state does not already
+satisfy is a quantum \emph{effect}---a post-selection---and the
+process that results is survival-conditioned by construction. What
+has been missing is the price. For prescription removals the
+statement is structural: the divisor reads the pole sheet, and the
+first-sheet ghost pole forces conditioning while the second-sheet
+resonance does not; the prescriptions that avoid conditioning pay
+instead in the other trilemma currencies.
+
+Concretely, we establish three groups of results.
+
+\paragraph{(i) Maldacena's boundary condition, priced
+(Section~\ref{sec:maldacena}).}
+We translate the per-mode fourth-order graviton system into a detuned
+Pais--Uhlenbeck (PU) oscillator with frequencies
+$\omega_{1}$ and $\omega_{2}=\omega_{1}-\delta$, the detuning
+$\delta$ standing for the de~Sitter splitting of the
+$\Delta=3$ graviton from its $\Delta=2$ negative-norm partner;
+Minkowski is the conformal point $\delta\to0$, where the pair
+degenerates into a Jordan block. In Ostrogradski variables
+$q_{1}=x$, $q_{2}=\dot x$ the Neumann condition is a condition on a
+\emph{configuration} variable, so its regularized form is a bona fide
+multiplication effect
+$E_{\sigma}=\exp(-q_{2}^{2}/2\sigma^{2})$, $0\le E_{\sigma}\le1$;
+Maldacena's positive-frequency condition is the state preparation and
+is deliberately \emph{not} counted in the price. On the
+Dirac-normalizable vacuum of the declared quantization the price
+sheet is closed form:
+\[
+p(\sigma,\delta)=\Bigl[1+\tfrac{1}{2\sigma^{2}\delta}\Bigr]^{-1/2}
+\;\xrightarrow{\ \sigma\to0\ }\;\sigma\sqrt{2\delta},
+\qquad
+F=\frac{2\sqrt{\alpha\,\omega_{1}}}{\alpha+\omega_{1}}
+\simeq2\sqrt{\omega_{2}\delta},
+\quad \alpha=\omega_{1}\omega_{2}\delta \quad(\omega_{1}=1),
+\]
+where $p$ is the survival probability of the effect and $F$ the
+fidelity of the delivered (conditioned) graviton state to the
+Einstein vacuum (against a fixed unit-mass reference; the
+convention-free content is the survival collapse and the delivered
+state's absolute width divergence). Both vanish as $\delta\to0$: the exorcism works in
+de~Sitter, where $\delta=O(1)$, and its price diverges exactly at the
+Minkowski point where Hell--L\"ust--Zoupanos found the flat-space
+version fails. The known qualitative obstruction becomes a
+quantitative collapse of the price sheet.
+
+\paragraph{(ii) The Hell--L\"ust--Zoupanos variant is
+Heisenberg-limited (Section~\ref{sec:hlz}).}
+HLZ impose two future conditions---Neumann $\dot h|_{0}=0$
+(their Eq.~(30)) and a curvature-matching condition on $\ddot h$
+(their Eq.~(59) in covariant form; per Fourier mode their Eq.~(64),
+$\ddot h_{k}|_{0}=k^{2}h_{k}|_{0}$)---and no in-state restriction,
+delivering the general two-parameter Einstein-$\Lambda$ tensor mode
+(their Eq.~(67)). In the Ostrogradski frame the second condition
+constrains $O_{2}=p_{2}+\omega_{1}^{2}q_{1}$, and $p_{2}$ is the
+momentum \emph{conjugate} to the $q_{2}$ that Neumann fixes:
+$[q_{2},O_{2}]=\ii$. The two-condition effect $\mathcal{M}'$ is therefore a
+joint position--momentum (Heisenberg-limited) effect. Its
+\emph{Weyl-ordered} survival factorizes at the Gaussian level
+($\mathrm{cov}(q_{2},O_{2})=0$ exactly), the second condition is
+asymptotically free
+($\mathrm{Var}(O_{2})=\tfrac{\delta}{2}\,
+\tfrac{\omega_{1}+\omega_{2}}{\omega_{2}}\to0$; the ghost-killing sign
+is also the finite-variance one, the opposite sign giving
+$\mathrm{Var}(O_{2})\to\infty$, Prop.~\ref{prop:O2}), and both natural
+operator orderings then give the same leading power
+$p_{\mathcal{M}'}\sim\sigma\sqrt{2\delta}$, differing only by an $O(1)$
+phase-space-cell factor. The surcharge buys generality, not
+cheapness; the conformal collapse is not evaded.
+
+\paragraph{(iii) The pole sheet is readable in the divisor
+(Sections~\ref{sec:sheet}--\ref{sec:taxonomy}).}
+Buoninfante's trilogy \cite{BuoninfanteP1,BuoninfanteP2,BuoninfanteP3}
+isolates the sharp spectral difference between an ordinary unstable
+particle and a ghost with the same complex-conjugate pole pair
+$m^{2}\pm\ii m\Gamma$: for the unstable particle the pair sits on the
+\emph{second} sheet and the K\"all\'en--Lehmann measure is a positive
+density with sum rule $1=C$ (all norm transfers to the continuum);
+for the ghost the pair sits on the \emph{first} sheet and the
+spectral decomposition acquires discrete \emph{negative-residue}
+complex-pole terms with sum rule $Z+Z^{*}=1+C$ (the one-particle
+component persists). We show this dichotomy is exactly the divisor
+dichotomy of \cite{indivisible}: a positive spectral measure makes
+the survival amplitude positive-definite in Bochner's sense, so
+$|A(t)|\le1$ and an \emph{unconditioned} sub-stochastic survival
+process exists, its divisor negativity transient when the amplitude is
+eventually monotone decreasing; the
+first-sheet pair makes $|A(t)|$ grow without bound, so no
+unconditioned process exists and the survival-conditioned dilation is
+mandatory---and, for the dimer realization, it lands in the terminal
+class, with the critical time and generator floor of \cite{indivisible}
+in closed form.
+Buoninfante's ``anti-instability'' masking law, the multi-particle
+overlap growing as $\sinh^{2}(\Gamma t/2)$, is shown to be
+\emph{exactly} the time dependence of the first companion paper's
+terminal-class (conditioning-mandatory) dimer cross-population---the
+pre-conditioning growth that conditioning divides out---%
+$|U_{12}(t)|^{2}
+=(\kappa/\wt)^{2}\sinh^{2}(\wt t)$ with $\wt=\Gamma/2$, up to the
+normalization $(\kappa/\wt)^{2}$: two
+bookkeepings of the same pole pair, one in the closed indefinite-metric
+currency, one in the beable currency. Finally the prescription
+taxonomy maps onto the trilemma: the Feynman ghost pays sample space
+(conditioning), the anti-Feynman ghost pays causal order (the
+Donoghue--Menezes corner---a connection this paper draws), and the
+fakeon pays silence (the state is excised). The live Anselmi--Buoninfante dispute over which
+prescription is ``viable'' is, in this reading, a currency dispute,
+and the trilemma prices both sides.
+
+Section~\ref{sec:priorart} scopes the claims against the final-state
+post-selection literature \cite{HorowitzMaldacena,Anastopoulos2024};
+Section~\ref{sec:limitations} lists the limitations, all of which are
+substantive; Section~\ref{sec:conclusion} concludes. Throughout,
+statements proved in closed form are labeled propositions with
+proofs; statements established numerically with analytic structure
+are labeled as such in the proof text. All numbers are reproducible
+from three short scripts (Code availability).
+
+%=====================================================================
+\section{The currency: divisors, conditioning, and the detuned
+Pais--Uhlenbeck mode}
+\label{sec:currency}
+
+\subsection{Divisors and the terminal class}
+\label{sec:divisor}
+
+We recall the minimal apparatus of \cite{indivisible}. Let a
+finite-configuration dynamics be presented by transition matrices
+$\Gamma(t)$ from time $0$ to time $t$ (columns summing to at most
+one: a \emph{sub-stochastic} process, the deficit being read as
+decay or, in the conditioned case, as failure to survive
+post-selection). The process is an ordinary (beable) process on the
+interval $[t_{1},t_{2}]$ iff the \emph{divisor}
+\begin{equation}
+M(t_{2},t_{1})\;=\;\Gamma(t_{2})\,\Gamma(t_{1})^{-1}
+\label{eq:divisor}
+\end{equation}
+is entrywise nonnegative: $M$ is then itself a transition matrix and
+the process can be continued through $t_{1}$ without memory of how it
+got there. (For a strictly sub-stochastic $\Gamma$ one additionally
+needs $M$ column-sub-stochastic; entrywise nonnegativity is the
+operative criterion, the normalization tracked separately, and the full
+statement is that of \cite{indivisible}.) Transient divisor negativity (indivisibility) is
+compatible with an ordinary process on coarser time grids; the
+pathological class identified in \cite{indivisible} is
+\emph{terminal} indivisibility: negativity that sets in at a finite
+$t_{c}$ and never leaves, with the late-time conditioned generator
+pinned at a strictly negative off-diagonal floor. A unitary (or
+non-unitary) mode dynamics $U(t)$ that admits no sub-stochastic
+$\Gamma$ at all---because $\norm{U(t)}>1$---survives in the beable
+currency only through the survival-conditioned dilation: normalize by
+the largest singular value,
+\begin{equation}
+\Gamma_{\mathrm{c}}(t)\;=\;
+\Bigl|\,U(t)/\sigma_{\max}\!\bigl(U(t)\bigr)\Bigr|^{2}
+\quad(\text{entrywise modulus squared}),
+\label{eq:conditioned}
+\end{equation}
+which is the transition matrix of the process conditioned on
+surviving the growth. For the broken-$\PT$ dimer
+\begin{equation}
+H=\begin{pmatrix}\ii a&\kappa\\ \kappa&-\ii a\end{pmatrix},
+\qquad a>\kappa,\qquad \wt=\sqrt{a^{2}-\kappa^{2}},
+\label{eq:dimer}
+\end{equation}
+the first companion paper derives the closed forms
+\begin{equation}
+t_{c}=\frac{1}{\wt}\,
+\operatorname{arcsinh}\!\Bigl(\frac{\wt}{\kappa\sqrt{2}}\Bigr),
+\qquad
+\text{generator floor}\;=\;-(a+\wt),
+\label{eq:tcfloor}
+\end{equation}
+both of which are re-verified numerically in
+Section~\ref{sec:sheet}. Because $H^{2}=-\wt^{2}\mathbf{1}$
+(the $\sigma_{z}$ and $\sigma_{x}$ parts anticommute),
+\begin{equation}
+U(t)=\ee^{-\ii Ht}
+=\cosh(\wt t)\,\mathbf{1}-\ii\,\frac{\sinh(\wt t)}{\wt}\,H,
+\qquad
+|U_{12}(t)|^{2}
+=\frac{\kappa^{2}}{\wt^{2}}\,\sinh^{2}(\wt t),
+\label{eq:dimerU}
+\end{equation}
+an exact identity we will need in Section~\ref{sec:masking}.
+
+\subsection{The detuned Pais--Uhlenbeck proxy}
+\label{sec:pu}
+
+Per mode, the linearized fourth-order graviton dynamics of conformal
+gravity is a Pais--Uhlenbeck oscillator \cite{PaisUhlenbeck1950}. We
+work with the detuned PU Lagrangian
+\begin{equation}
+L=\tfrac12\bigl[\ddot x^{2}
+-(\omega_{1}^{2}+\omega_{2}^{2})\,\dot x^{2}
++\omega_{1}^{2}\omega_{2}^{2}\,x^{2}\bigr],
+\qquad
+\omega_{2}=\omega_{1}-\delta,\qquad 0<\delta<\omega_{1},
+\label{eq:PUlag}
+\end{equation}
+with solutions $\ee^{\pm\ii\omega_{1}t},\ee^{\pm\ii\omega_{2}t}$. We
+set $\omega_{1}=1$ throughout the numerics. The detuning $\delta$ is
+our proxy dial for the de~Sitter splitting: in
+Maldacena's analysis \cite{Maldacena2011} the surviving graviton is
+the $\Delta=3$ mode and its removed partner is the negative-norm
+$\Delta=2$ mode, split by the Hubble scale; the Minkowski limit
+$H_{\Lambda}\to0$ merges the pair into the degenerate ($t$-growing,
+Jordan-block) conformal mode, i.e.\ $\delta\to0$. The proxy is a
+declared, mode-level translation---we do not derive it from the
+conformal-gravity path integral, and Section~\ref{sec:limitations}
+returns to this point.
+
+Ostrogradski variables: $q_{1}=x$, $q_{2}=\dot x$, with conjugate
+momenta $p_{1},p_{2}$ ($p_{2}=\ddot x$ on shell), and
+\begin{equation}
+H=p_{1}q_{2}+\tfrac12 p_{2}^{2}
++\tfrac12(\omega_{1}^{2}+\omega_{2}^{2})\,q_{2}^{2}
+-\tfrac12\,\omega_{1}^{2}\omega_{2}^{2}\,q_{1}^{2}.
+\label{eq:PUham}
+\end{equation}
+Both $q_{1}$ and $q_{2}$ are \emph{configuration} variables: the
+beable sample space of this mode is the two-slice memory
+$(x,\dot x)$, exactly as in the companion papers. $H$ is Hermitian on
+$L^{2}(\mathbb{R}^{2})$ and unbounded below (Ostrogradski); its
+normalizable spectrum in this quantization is
+$E_{n_{1}n_{2}}=\omega_{1}(n_{1}+\tfrac12)
+-\omega_{2}(n_{2}+\tfrac12)$.
+
+\begin{proposition}[The Dirac-normalizable vacuum and its
+exceptional-point degeneration]
+\label{prop:vacuum}
+The Gaussian ansatz
+$\Psi_{0}(q_{1},q_{2})
+=\exp\bigl[-\tfrac12(\alpha q_{1}^{2}+bq_{2}^{2})-\ii c\,q_{1}q_{2}\bigr]$
+solves $H\Psi_{0}=E_{0}\Psi_{0}$ exactly, with
+\begin{equation}
+c=\omega_{1}\omega_{2},\qquad
+b=\delta,\qquad
+\alpha=\omega_{1}\omega_{2}\,\delta,\qquad
+E_{0}=\tfrac{\delta}{2}.
+\label{eq:vacuum}
+\end{equation}
+Hence $|\Psi_{0}|^{2}
+=\exp(-\omega_{1}\omega_{2}\delta\,q_{1}^{2}-\delta\,q_{2}^{2})$: the
+state is normalizable for every $\delta>0$, and its widths in
+\emph{both} configuration variables diverge as $\delta^{-1/2}$ at the
+conformal point. The root $c=-\omega_{1}\omega_{2}$,
+$b=\omega_{1}+\omega_{2}$ has $\alpha=-\omega_{1}\omega_{2}
+(\omega_{1}+\omega_{2})<0$ and is normalizable only under contour
+rotation (the Bender--Mannheim quantization
+\cite{BenderMannheim2008}); it is not used here.
+\end{proposition}
+
+\begin{proof}
+Substituting the ansatz into \eqref{eq:PUham} with
+$p_{1}=-\ii\partial_{q_{1}}$, $p_{2}=-\ii\partial_{q_{2}}$ and
+collecting monomials gives three coefficient equations and the
+eigenvalue:
+\[
+q_{1}^{2}:\ \ \tfrac{c^{2}}{2}
+=\tfrac{\omega_{1}^{2}\omega_{2}^{2}}{2};
+\qquad
+q_{2}^{2}:\ \ \tfrac{b^{2}}{2}+c
+=\tfrac{\omega_{1}^{2}+\omega_{2}^{2}}{2};
+\qquad
+q_{1}q_{2}:\ \ \alpha=bc;
+\qquad
+E_{0}=\tfrac{b}{2}.
+\]
+The first fixes $c=\pm\omega_{1}\omega_{2}$; with
+$c=+\omega_{1}\omega_{2}$ the second gives
+$b^{2}=(\omega_{1}-\omega_{2})^{2}$, and the normalizable root is
+$b=\delta$, whence $\alpha=\omega_{1}\omega_{2}\delta$ and
+$E_{0}=\delta/2$. With $c=-\omega_{1}\omega_{2}$ one finds
+$b=\omega_{1}+\omega_{2}$, $\alpha<0$. The three independent coefficient
+equations were
+also confirmed to machine precision, and the eigenvalue on a
+$1201^{2}$ grid at $\delta=0.5$ to $E_{0}=0.249998$ vs.\ $0.25$
+(the script noted in Code availability).
+\end{proof}
+
+The $\delta^{-1/2}$ width divergence is the exceptional-point
+degeneration of the equal-frequency limit made quantitative at the
+level of the state: as the two frequencies merge, the normalizable
+vacuum flattens in both beables at the same rate. Everything priced
+below inherits this degeneration.
+
+\paragraph{Declared quantization (and why it must be declared).}
+The PU mode at unequal frequencies admits inequivalent quantizations:
+the Dirac-normalizable realization above (positive norm, energy
+unbounded below---the ``Hermitian ghost'' realization, which is the
+one carrying a beable sample space, cf.\ \cite{choosing}), and the
+contour-rotated Bender--Mannheim realization (bounded energy,
+indefinite or redefined norm). The price computed in this paper is a
+statement about the first. This is the honest order of operations:
+one must choose the quantization \emph{before} pricing the effect,
+and the answer may depend on the choice. We state it once and do not
+hide it.
+
+%=====================================================================
+\section{Maldacena's exorcism, priced}
+\label{sec:maldacena}
+
+\subsection{What is the effect and what is the state preparation}
+\label{sec:effect}
+
+Maldacena's argument \cite{Maldacena2011} has two moving parts per
+graviton mode. First, positive frequency in the far past: this
+selects the Bunch--Davies-type in-state. Second, the Neumann
+condition $\dot g=0$ at the future boundary: this kills the
+$\Delta=2$ partner and leaves the Einstein graviton, with
+$\Psi_{\mathrm{Conformal}}[g,\dot g=0]
+\propto\Psi_{\mathrm{BD\text{-}ren}}[g]$ at tree level. In
+post-selection language the two parts are \emph{not} on the same
+footing, and pricing them as if they were would double-count:
+\begin{itemize}
+\item the positive-frequency condition is \emph{state preparation}
+(it fixes $\rho_{\mathrm{in}}$, here proxied by
+$\Psi_{0}$ of Proposition~\ref{prop:vacuum});
+\item the Neumann condition is the \emph{effect}: a condition imposed
+at a later boundary that the prepared state does not already satisfy.
+\end{itemize}
+Only the second carries a survival price, and only the second is what
+we price.
+
+The sharp Neumann effect ``$q_{2}=0$'' is improper (a
+$\delta$-normalized projection, with survival probability strictly
+zero against any absolutely continuous distribution). We therefore
+price the regularized Gaussian family
+\begin{equation}
+E_{\sigma}=\exp\!\Bigl(-\frac{q_{2}^{2}}{2\sigma^{2}}\Bigr),
+\qquad 0\le E_{\sigma}\le1,
+\qquad K_{\sigma}=E_{\sigma}^{1/2},
+\label{eq:Esigma}
+\end{equation}
+a bona fide multiplication effect on the configuration variable
+$q_{2}=\dot x$ (this is the point of the Ostrogradski frame: the
+velocity is a beable, so the Neumann condition is a position-type
+measurement, not a momentum smearing), and control the
+$\sigma\to0$ limit explicitly. The determinant of $E_{\sigma}$ on the
+relevant Gaussian sector and the survival probability vanish
+together, so the regularization introduces no spurious hierarchy;
+all statements below are made at fixed $\sigma$ and then in the
+stated $\sigma\to0$ asymptotics.
+
+\subsection{The survival price}
+
+\begin{proposition}[Survival]
+\label{prop:survival}
+On the vacuum of Proposition~\ref{prop:vacuum},
+\begin{equation}
+p(\sigma,\delta)
+=\frac{\langle\Psi_{0}|E_{\sigma}|\Psi_{0}\rangle}
+{\langle\Psi_{0}|\Psi_{0}\rangle}
+=\Bigl[1+\frac{1}{2\sigma^{2}\delta}\Bigr]^{-1/2}
+\;\xrightarrow{\ \sigma\to0\ }\;
+\sigma\sqrt{2\delta}\,.
+\label{eq:price}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The $q_{2}$-marginal of $|\Psi_{0}|^{2}$ is
+$\propto\ee^{-\delta q_{2}^{2}}$ (the $q_{1}$ integral factors), so
+\[
+p=\frac{\int\ee^{-\delta q_{2}^{2}}
+\ee^{-q_{2}^{2}/2\sigma^{2}}\,\dd q_{2}}
+{\int\ee^{-\delta q_{2}^{2}}\,\dd q_{2}}
+=\sqrt{\frac{\delta}{\delta+1/2\sigma^{2}}}
+=\Bigl[1+\tfrac{1}{2\sigma^{2}\delta}\Bigr]^{-1/2}.
+\]
+The grid evaluation agrees with this closed form to six digits at all
+tested $(\sigma,\delta)$.
+\end{proof}
+
+The physics is in the $\delta$-dependence, and it is transparent: the
+vacuum's spread in the very variable the exorcism constrains grows as
+$\delta^{-1/2}$ (Proposition~\ref{prop:vacuum}), so the fraction of
+the ensemble that survives the constraint shrinks as
+$\sqrt{\delta}$. In de~Sitter, where the $\Delta=3/\Delta=2$
+splitting is order one, the price is order $\sigma$---the ordinary
+cost of any finite-resolution post-selection. As the cosmological
+constant is switched off the exorcism becomes arbitrarily expensive.
+
+\subsection{The delivered state}
+
+Removing the ghost is only half of the advertisement; the other half
+is that what survives is \emph{Einstein} gravity. The proxy for that
+claim is the fidelity of the conditioned state to the Einstein-mode
+vacuum $\phi(q_{1})=(\omega_{1}/\pi)^{1/4}
+\ee^{-\omega_{1}q_{1}^{2}/2}$.
+
+\begin{proposition}[Delivery]
+\label{prop:delivery}
+As $\sigma\to0$ the conditioned reduced state on $q_{1}$ is the pure
+Gaussian $\psi_{c}(q_{1})\propto\Psi_{0}(q_{1},0)
+=\ee^{-\alpha q_{1}^{2}/2}$ with $\alpha=\omega_{1}\omega_{2}\delta$, and its
+fidelity to the Einstein vacuum is
+\begin{equation}
+F=\bigl|\langle\phi|\psi_{c}\rangle\bigr|^{2}
+=\frac{2\sqrt{\alpha\,\omega_{1}}}{\alpha+\omega_{1}}
+\;=\;\frac{2\sqrt{\omega_{2}\delta}}{1+\omega_{2}\delta}
+\Big|_{\omega_{1}=1}
+\;\simeq\;2\sqrt{\omega_{2}\delta}
+\quad(\delta\to0).
+\label{eq:fidelity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+As $\sigma\to0$ the Kraus operator $K_{\sigma}$ concentrates the
+$q_{2}$ dependence on $q_{2}=0$; since
+$\Psi_{0}(q_{1},q_{2})$ is Gaussian, the conditioned $q_{1}$ slice is
+$\ee^{-\alpha q_{1}^{2}/2}$ (the phase $\ee^{-\ii cq_{1}q_{2}}$ drops on the
+slice). The overlap of two centered Gaussians of widths
+$\alpha^{-1/2},\omega_{1}^{-1/2}$ gives \eqref{eq:fidelity} by a one-line
+integral. Numerically, the log--log slope of $F(\delta)$ over
+$\delta\in[8\times10^{-4},2\times10^{-2}]$ is $0.491$
+(predicted $1/2$), and the finite-$\sigma$ \emph{mixed} conditioned
+state at $(\delta,\sigma)=(0.1,0.05)$ gives $F=0.5500$ against the
+$\sigma\to0$ closed form $0.5505$: the pure-slice limit is reached
+smoothly.
+\end{proof}
+
+The delivered graviton is a Gaussian of width $\alpha^{-1/2}
+\sim(\omega_{2}\delta)^{-1/2}$, not the Einstein-vacuum width
+$\omega_{1}^{-1/2}$: the exorcised state remembers the
+exceptional-point flattening of the parent vacuum. At $\delta=O(1)$
+(de~Sitter) the fidelity is order one ($F=0.80$ at $\delta=0.5$); at
+the conformal point it collapses like $\sqrt{\delta}$. This fidelity is
+taken against a \emph{fixed} external Einstein vacuum $\phi$ of
+$\delta$-independent width $\omega_{1}^{-1/2}$ (the healthy graviton at
+unit mass)---a declared convention. The proxy's \emph{own} healthy
+normal mode co-degenerates with the delivered state
+($\mathrm{Var}(y_{1})=1/(2\omega_{1}\delta(\omega_{1}+\omega_{2}))\to\infty$
+as $\delta\to0$), so measured against that co-scaling reference the
+fidelity would stay $O(1)$ (tending to $2\sqrt{2}/3$). The
+$\sqrt{\delta}$ collapse is therefore the delivered state's
+\emph{absolute} width divergence $\alpha^{-1/2}\sim\delta^{-1/2}$ read
+against a fixed ruler, not a reference-independent fact; the
+convention-free content is (a)~the survival collapse
+$p\sim\sigma\sqrt{2\delta}$ and (b)~that absolute width divergence. (At
+$\delta=0$ neither state is normalizable, so $F$ is a ratio of two
+diverging widths there.)
+
+\subsection{The price sheet and the conformal collapse}
+\label{sec:pricesheet}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$\delta$ & $p$ (survival, $\sigma=0.05$) & $F$ (Einstein fidelity) \\
+\midrule
+$0.500$ & $0.04994$ & $0.8000$ \\
+$0.100$ & $0.02236$ & $0.5505$ \\
+$0.020$ & $0.01000$ & $0.2746$ \\
+$0.004$ & $0.00447$ & $0.1257$ \\
+\bottomrule
+\end{tabular}
+\caption{The price sheet of Maldacena's exorcism on the detuned-PU
+proxy: survival probability of the regularized Neumann effect
+(Proposition~\ref{prop:survival}) and Einstein-vacuum fidelity of the
+delivered state (Proposition~\ref{prop:delivery}), both closed form,
+both grid-verified. Both columns collapse at the conformal
+(Minkowski) point $\delta\to0$; the survival collapse and the delivered
+state's \emph{absolute} width divergence are convention-free, while the
+fidelity column reads that divergence against a \emph{fixed}
+Einstein-vacuum width (text after Proposition~\ref{prop:delivery}).}
+\label{tab:pricesheet}
+\end{table}
+
+\begin{corollary}[Conformal collapse]
+\label{cor:collapse}
+$p\,F\simeq2\sqrt{2}\,\sigma\,\omega_{2}^{1/2}\,\delta$ as
+$\delta\to0$ at fixed $\sigma$: the joint figure of merit of the
+exorcism---how much ensemble survives times how Einstein-like the
+survivor is---vanishes \emph{linearly} in the de~Sitter splitting. (The
+$F$ factor inherits the fixed-reference convention of
+Proposition~\ref{prop:delivery}; the survival factor $p$ is
+convention-free.)
+\end{corollary}
+
+This is the quantitative form of a failure that Hell, L\"ust, and
+Zoupanos located qualitatively \cite{HLZ}. Their flat-space analysis
+finds that the Neumann-selected survivor in Minkowski is \emph{not}
+an Einstein solution---a $t\,\ee^{-\ii kt}$ growing piece survives
+inside the selected state---while in de~Sitter the survivor is
+Einstein but carries only half the Einstein data. Our diagnosis of
+the root cause: flat space is the degenerate PU point. At
+$\delta=0$ the four-dimensional solution space does not split
+invariantly into graviton~$\otimes$~partner (the mode matrix is a
+Jordan block), so writing the removal as
+$\mathcal{M}=\mathbf{1}\otimes E$ is singular exactly at $H_{\Lambda}=0$;
+de~Sitter works because the $\Delta=3/\Delta=2$ splitting resolves
+the degeneracy. The prediction that follows---the price should
+degenerate as $H_{\Lambda}\to0$---is what
+Table~\ref{tab:pricesheet} confirms: the divisor currency
+\emph{detects} the flat-space obstruction as a price collapse, without
+being told about Jordan blocks. For the de~Sitter over-selection
+(half the Einstein data), the post-selection reading is actually
+charitable: an effect is supposed to pin a state; the ``missing''
+half of the classical data is not a bug of the exorcism-as-conditioning
+but of reading it as a classical solution map. What one \emph{does}
+pay to recover the general Einstein solution is the subject of the
+next section.
+
+%=====================================================================
+\section{The Hell--L\"ust--Zoupanos variant: a Heisenberg-limited
+exorcism}
+\label{sec:hlz}
+
+\subsection{Two future conditions, one conjugate pair}
+
+HLZ \cite{HLZ} replace Maldacena's (state-prep $+$ one condition)
+scheme by two future conditions and no in-state restriction: the
+Neumann condition $\dot h|_{0}=0$ (their Eq.~(30)) and the
+curvature-matching condition on the second derivative (their
+Eq.~(59) in covariant form), which for a de~Sitter tensor mode reads
+$\ddot h_{k}|_{0}=k^{2}h_{k}|_{0}$ (their Fourier-space Eq.~(64));
+together these fix the secular (ghost) coefficients in terms of the
+oscillatory ones and deliver the \emph{general} two-parameter
+Einstein-$\Lambda$ tensor mode
+$h_{k}=A\,(1-\ii k\eta)\,\ee^{\ii k\eta}
++B\,(1+\ii k\eta)\,\ee^{-\ii k\eta}$, their Eq.~(67).
+In the proxy frame the translation is immediate:
+\begin{itemize}
+\item Eq.~(30), $\dot x=0$: the variable $q_{2}$, i.e.\ exactly
+Maldacena's effect $E_{\sigma}$ of \eqref{eq:Esigma};
+\item Eqs.~(59)/(64), $\ddot x=-\omega_{1}^{2}x$ (healthy Einstein
+dispersion): the phase-space variable
+\begin{equation}
+O_{2}\;=\;\ddot x+\omega_{1}^{2}x\;=\;p_{2}+\omega_{1}^{2}q_{1},
+\qquad\text{constrained to }0,
+\label{eq:O2}
+\end{equation}
+regularized as $E'_{\tau}=\exp(-O_{2}^{2}/2\tau^{2})$. We adopt the
+proxy dispersion $\ddot x=-\omega_{1}^{2}x$, which is the
+\emph{ghost-killing} sign derived just below---not a free choice.
+HLZ's Fourier-space condition (their Eq.~(64),
+$\ddot h_{k}|_{0}=+k^{2}h_{k}|_{0}$, confirmed against the published
+text) carries the opposite \emph{literal} sign yet selects the same
+object: together with Neumann (their Eq.~(30), $\dot h|_{0}=0$) it
+uniquely carves out the Einstein two-parameter family
+$h_{k}=A(1-\ii k\eta)\ee^{\ii k\eta}+B(1+\ii k\eta)\ee^{-\ii k\eta}$
+(their Eq.~(67)). At the future boundary this family has \emph{positive
+curvature}, $\ddot h(0)=+k^{2}h(0)$ (locally
+$h\simeq1+\tfrac12 k^{2}\eta^{2}$)---the boundary signature the second
+condition enforces---while the corresponding healthy mode of the
+\emph{flat} proxy is the oscillator $\ee^{\pm\ii\omega_{1}t}$, whose
+curvature is $\ddot x=-\omega_{1}^{2}x$. It is this boundary-curvature
+sign that inverts between the conformal-time and flat-proxy
+descriptions---a property of the declared proxy, not a frame
+convention---so the literal $+k^{2}$ becomes $-\omega_{1}^{2}$; the
+proxy sign is fixed by ghost-killing (below). In
+normal-mode language $O_{2}=0$ is precisely ``kill the ghost
+coordinate'': for $x=y_{1}+y_{2}$ with
+$\ddot y_{i}=-\omega_{i}^{2}y_{i}$, the condition
+$\ddot x=-\omega_{1}^{2}x$ forces
+$(\omega_{1}^{2}-\omega_{2}^{2})\,y_{2}=0$.
+\end{itemize}
+The crucial structural fact is that $p_{2}$ is the Ostrogradski
+momentum conjugate to $q_{2}$:
+\begin{equation}
+[q_{2},O_{2}]=[q_{2},p_{2}]=\ii .
+\label{eq:conjugate}
+\end{equation}
+Maldacena's $\mathcal{M}$ fixes one quadrature of the velocity sector; the HLZ
+$\mathcal{M}'$ fixes a \emph{canonically conjugate pair}. $\mathcal{M}'$ is therefore a
+joint position--momentum effect, and Heisenberg limits it: neither natural
+ordering of the two Gaussian conditions can beat the minimal
+phase-space cell. We price $\mathcal{M}'$ against the same reference vacuum
+$\Psi_{0}$ as $\mathcal{M}$, so the two effects are scored on identical input;
+HLZ's dropping of the in-state restriction constrains the
+\emph{delivered} state, not the reference against which survival is
+measured.
+
+\begin{proposition}[Second-condition statistics]
+\label{prop:O2}
+On the vacuum of Proposition~\ref{prop:vacuum},
+\begin{equation}
+O_{2}\Psi_{0}=\bigl(\ii\,\delta\,q_{2}
++\omega_{1}\delta\,q_{1}\bigr)\Psi_{0},
+\qquad
+\mathrm{Var}_{\Psi_{0}}(O_{2})
+=\frac{\delta}{2}\,\frac{\omega_{1}+\omega_{2}}{\omega_{2}}
+\;\xrightarrow{\ \delta\to0\ }\;\delta,
+\label{eq:varO2}
+\end{equation}
+and the symmetrized covariance vanishes exactly:
+$\mathrm{Re}\,\langle q_{2}O_{2}\rangle_{\Psi_{0}}=0$
+(indeed $\langle q_{2}O_{2}\rangle_{\Psi_{0}}=\ii/2$, pure
+commutator). Consequently the $(q_{2},O_{2})$ Wigner marginal of $\Psi_{0}$ is an
+uncorrelated Gaussian, so the \emph{Weyl}-ordered survival factorizes
+as $p_{1}p_{2}$, with
+\begin{equation}
+p_{2}(\tau,\delta)
+=\Bigl[1+\frac{\mathrm{Var}(O_{2})}{\tau^{2}}\Bigr]^{-1/2}
+\;\xrightarrow{\ \delta\to0\ }\;1 .
+\label{eq:p2}
+\end{equation}
+Operator orderings that respect $[q_{2},O_{2}]=\ii$ (product/Kraus)
+do \emph{not} factorize; that non-factorization is precisely the
+$1/(4\sigma^{2}\tau^{2})$ Heisenberg surcharge of
+Proposition~\ref{prop:mprime}.
+\end{proposition}
+
+\begin{proof}
+$p_{2}\Psi_{0}=-\ii\partial_{q_{2}}\Psi_{0}
+=(\ii b q_{2}-cq_{1})\Psi_{0}$ and
+$\omega_{1}^{2}-c=\omega_{1}(\omega_{1}-\omega_{2})
+=\omega_{1}\delta$, giving the first identity. Then
+$\mathrm{Var}(O_{2})=b^{2}\langle q_{2}^{2}\rangle
++\omega_{1}^{2}\delta^{2}\langle q_{1}^{2}\rangle
+=\tfrac{b}{2}+\tfrac{\omega_{1}^{2}\delta^{2}}{2\alpha}
+=\tfrac{\delta}{2}\bigl(1+\tfrac{\omega_{1}}{\omega_{2}}\bigr)$
+(the cross terms cancel between the $\pm\ii$ pieces), and
+$\langle q_{2}O_{2}\rangle
+=\ii b\langle q_{2}^{2}\rangle=\ii/2$. Since $\Psi_{0}$ is Gaussian,
+$O_{2}$ is Gaussian-distributed and \eqref{eq:p2} is the standard
+Gaussian-effect integral. Grid values (spectral $p_{2}$,
+$2048$-point FFT) reproduce \eqref{eq:varO2} to five digits at
+$\delta=0.5,0.1,0.02$ and the covariance to $10^{-18}$ at
+$\delta=0.3,0.05$.
+\end{proof}
+
+Equation \eqref{eq:varO2} says the prepared vacuum \emph{already
+nearly satisfies} the second HLZ condition as $\delta\to0$: the
+second condition is asymptotically free in scale. All the
+$\delta$-collapse continues to come from the Neumann factor.
+This conclusion---and with it the equal-leading-power verdict of
+Proposition~\ref{prop:mprime}---rests on the sign
+$O_{2}=p_{2}+\omega_{1}^{2}q_{1}$, which is the ghost-killing sign of
+\eqref{eq:O2} and \emph{also} the finite-variance one: the opposite
+sign $O_{2}=p_{2}-\omega_{1}^{2}q_{1}$ isolates no proxy mode and gives
+$\mathrm{Var}(O_{2})=\tfrac{\delta}{2}
++\omega_{1}(\omega_{1}+\omega_{2})^{2}/(2\omega_{2}\delta)\to\infty$
+(leading power $1$, not $\tfrac12$). Ghost-killing and finite variance
+therefore select the same sign, and HLZ's Eq.~(64)---%
+$\ddot h_{k}|_{0}=+k^{2}h_{k}|_{0}$, confirmed against the published
+text---is consistent with it under the role inversion of
+\eqref{eq:O2}. The second-condition sign is thus derived; the only
+residual modeling input is the declared proxy dictionary itself
+(Section~\ref{sec:limitations}).
+
+\subsection{The price of \texorpdfstring{$\mathcal{M}'$}{M'}}
+
+Because the two constrained variables are conjugate, the survival of
+$\mathcal{M}'$ depends on the operator ordering of the two Gaussian factors---an
+$O(1)$, not power-law, effect.
+
+\begin{proposition}[$\mathcal{M}'$ price sheet]
+\label{prop:mprime}
+Let $p_{1}=p(\sigma,\delta)$ of \eqref{eq:price} and
+$p_{2}=p_{2}(\tau,\delta)$ of \eqref{eq:p2}. Then:
+\begin{itemize}
+\item[(i)] (Weyl ordering; exact) The operator with Weyl symbol
+$\exp(-q_{2}^{2}/2\sigma^{2}-O_{2}^{2}/2\tau^{2})$ has vacuum
+expectation exactly $p_{1}p_{2}$; it is a bona fide effect
+(positivity $E\ge0$) iff $\sigma\tau\ge1/2$. Here $\sigma\tau\ge1/2$ is the
+Gaussian positivity/uncertainty condition securing the lower bound
+$E\ge0$; the upper bound $E\le1$ then follows because at and above
+the minimal cell the operator is, up to a metaplectic
+(Gaussian-unitary) conjugation, a single-mode Gaussian effect whose
+Fock eigenvalues lie in $[0,1)$, reducing to $\mathbf{1}$ only as
+$\sigma,\tau\to\infty$.
+\item[(ii)] (Product/Kraus ordering; exact) The always-legitimate
+effect $E=K^{\dagger}K$ with
+$K=\ee^{-O_{2}^{2}/4\tau^{2}}\allowbreak\ee^{-q_{2}^{2}/4\sigma^{2}}$ has vacuum
+survival given exactly by the closed form
+\begin{equation}
+p_{\mathcal{M}'}\;=\;p_{1}\Bigl[1+\frac{\mathrm{Var}(O_{2})}{\tau^{2}}
++\frac{1}{4\sigma^{2}\tau^{2}}\Bigr]^{-1/2},
+\label{eq:kraus}
+\end{equation}
+whose sub-minimal-cell (sharp-effect) limit, taken along the joint
+$\sigma,\tau\to0$ path (so that the Heisenberg term
+$1/(4\sigma^{2}\tau^{2})$ dominates the bracket, i.e.\
+$\sigma\tau\to0$), is exactly
+$p_{\mathcal{M}'}\to2\sigma\tau\,p_{1}$: the Maldacena survival times the
+phase-space cell $2\sigma\tau$ in minimal-uncertainty units. The
+extra $1/(4\sigma^{2}\tau^{2})$ in the bracket---absent from the Weyl
+product $p_{1}p_{2}$ of (i)---is the Heisenberg back-reaction of
+squeezing $q_{2}$ onto its conjugate $p_{2}\subset O_{2}$, i.e.\ the
+$O(1)$ ordering surcharge.
+\item[(iii)] Both orderings have the same leading detuning power,
+exactly $1/2$: $p_{\mathcal{M}'}\sim\sigma\sqrt{2\delta}$ as $\delta\to0$ up to
+$O(1)$ prefactors, since $p_{1}\to\sigma\sqrt{2\delta}$ while the
+bracket in \eqref{eq:kraus} tends to a $\delta$-independent constant
+(recall $\mathrm{Var}(O_{2})\to0$). The $\delta\to0$ leading power of
+the closed form \eqref{eq:kraus} is therefore $1/2$ for every
+$(\sigma,\tau)$.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+(i) The expectation of a Weyl-ordered operator is the phase-space
+average of its symbol against the Wigner function; the Wigner
+function of the Gaussian $\Psi_{0}$, marginalized to the
+$(q_{2},O_{2})$ plane, is an uncorrelated Gaussian with the variances
+of Proposition~\ref{prop:O2}, so the double Gaussian integral
+factorizes into $p_{1}p_{2}$. Positivity of the Weyl quantization of
+a Gaussian symbol holds iff the symbol's covariance admits the
+minimal-cell bound, i.e.\ $\sigma\tau\ge1/2$. The two single-factor
+limits are exact on the grid: at $\delta=0.1$,
+$\tau=10^{3}$ returns $p_{1}$ and $\sigma=10^{3}$ returns $p_{2}$,
+each to five digits.
+
+(ii)--(iii) In the product ordering
+$\langle\Psi_{0}|K^{\dagger}K|\Psi_{0}\rangle
+=\langle\phi|\ee^{-O_{2}^{2}/2\tau^{2}}|\phi\rangle$ with
+$\phi=\ee^{-q_{2}^{2}/4\sigma^{2}}\Psi_{0}$, still Gaussian. Three
+steps. (1)~The norm ratio is Maldacena's survival exactly,
+$\norm{\phi}^{2}/\norm{\Psi_{0}}^{2}
+=[1+1/(2\sigma^{2}\delta)]^{-1/2}=p_{1}$, since
+$|\phi|^{2}=\ee^{-q_{2}^{2}/2\sigma^{2}}|\Psi_{0}|^{2}$ reproduces the
+integral of Proposition~\ref{prop:survival}. (2)~In the normalized
+state $\phi/\norm{\phi}$, $O_{2}$ is again a zero-mean Gaussian, now
+with variance
+$V'=\mathrm{Var}_{\Psi_{0}}(O_{2})+1/(4\sigma^{2})$: narrowing
+$q_{2}$ by the factor $\ee^{-q_{2}^{2}/4\sigma^{2}}$ broadens the
+conjugate $p_{2}\subset O_{2}$ by exactly $1/(4\sigma^{2})$, the
+Heisenberg back-reaction of squeezing $q_{2}$. (3)~The
+Gaussian-effect overlap then gives
+$\langle\phi|\ee^{-O_{2}^{2}/2\tau^{2}}|\phi\rangle/\norm{\phi}^{2}
+=[1+V'/\tau^{2}]^{-1/2}$. Multiplying (1) and (3) yields
+\eqref{eq:kraus} exactly. Along the joint $\sigma,\tau\to0$ path (so
+that $\sigma^{2}\mathrm{Var}(O_{2})\to0$) the
+$1/(4\sigma^{2}\tau^{2})$ term dominates the bracket, giving
+$p_{\mathcal{M}'}\to2\sigma\tau\,p_{1}$; and since $\mathrm{Var}(O_{2})\to0$
+with $p_{1}\to\sigma\sqrt{2\delta}$, the detuning exponent is exactly
+$1/2$. A high-resolution grid tracks \eqref{eq:kraus} (with
+grid-resolution artifacts at the smallest $\delta$, where the vacuum
+width $\sim\delta^{-1/2}$ outruns the box; the tabulated values are the
+analytic closed form); the comparison table follows.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccc}
+\toprule
+$\delta$ & $p_{1}$ & $p_{2}$ & $p_{1}p_{2}$ (Weyl) &
+$p_{\mathcal{M}'}$ \eqref{eq:kraus} & $2\sigma\tau\,p_{1}$ \\
+\midrule
+$0.500$ & $0.09950$ & $0.11471$ & $0.01141$ & $0.00196$ & $0.00199$\\
+$0.100$ & $0.04468$ & $0.29417$ & $0.01314$ & $0.00089$ & $0.00089$\\
+$0.020$ & $0.02000$ & $0.57540$ & $0.01151$ & $0.00040$ & $0.00040$\\
+$0.004$ & $0.00894$ & $0.84491$ & $0.00756$ & $0.00018$ & $0.00018$\\
+\bottomrule
+\end{tabular}
+\caption{Pricing $\mathcal{M}'$ at $\sigma=\tau=0.1$
+(so $2\sigma\tau=0.02$). The Neumann factor $p_{1}$ carries all the
+$\delta$-collapse; the second-condition factor $p_{2}\to1$
+(asymptotically free); the product-ordered survival is the exact
+closed form \eqref{eq:kraus}, which in this deep sub-cell
+(sharp-effect) regime tracks $2\sigma\tau\,p_{1}$, i.e.\ Maldacena's price times a
+Heisenberg-cell surcharge. Here $\sigma\tau=0.01<1/2$, so by
+Proposition~\ref{prop:mprime}(i) the Weyl operator is not positive in
+this regime; the displayed $p_{1}p_{2}$ (Weyl) column is therefore the
+expectation of a non-effect---a formal comparator, not a survival
+probability.}
+\label{tab:mprime}
+\end{table}
+
+\subsection{What the surcharge buys}
+
+The fidelity scorecard exposes the qualitative difference between the
+two exorcisms. On the same grids, at $\sigma=\tau=0.05$:
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$\delta$ & $F_{\mathcal{M}}$ (Neumann only) & $F_{\mathcal{M}'}$ (both conditions) \\
+\midrule
+$0.500$ & $0.7996$ & $0.0635$ \\
+$0.100$ & $0.5494$ & $0.0506$ \\
+$0.020$ & $0.2744$ & $0.0508$ \\
+$0.004$ & $0.1258$ & $0.0786$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+$F_{\mathcal{M}}$ tracks the closed form \eqref{eq:fidelity}; $F_{\mathcal{M}'}$ is
+roughly flat and small, and this is \emph{by design}, not by failure:
+$\mathcal{M}'$ does not target the pure $\omega_{1}$ vacuum at all. It targets
+the general two-parameter ($A,B$) Einstein solution with no in-state
+preparation---a mixed delivered state whose overlap with any single
+pure vacuum is correspondingly reduced (small in the numerics above,
+not by a general bound). Pure-vacuum fidelity is the right
+scorecard for $\mathcal{M}$ and the wrong one for $\mathcal{M}'$.
+
+The comparison is then clean:
+\begin{itemize}
+\item \emph{Survival:} $p_{\mathcal{M}}\sim\sigma\sqrt{2\delta}$ and
+$p_{\mathcal{M}'}\sim\sigma\sqrt{2\delta}$ up to $O(1)$: the second HLZ
+condition adds only a Heisenberg surcharge (it fixes $\ddot x$,
+conjugate to the $\dot x$ that Neumann fixes) and is not a new source
+of collapse, because $\mathrm{Var}(O_{2})\sim\delta$ already
+vanishes.
+\item \emph{Delivery:} $\mathcal{M}$ delivers (at $\sqrt{\delta}$-collapsing
+fidelity) a pure but over-broad vacuum; $\mathcal{M}'$ delivers the general
+Einstein solution.
+\end{itemize}
+This is HLZ's own claim---Neumann alone yields no general solution---%
+re-expressed as a price: the extra condition buys \emph{generality},
+not economy, and the conformal ($\delta\to0$) collapse of the
+survival is not evaded by either scheme. In the currency of this
+series, there is no cheap exorcism of the conformal graviton pair by
+future boundary data: the price is set by the exceptional-point
+degeneration of the state, which no rearrangement of the boundary
+conditions removes.
+
+%=====================================================================
+\section{The pole sheet is readable in the divisor}
+\label{sec:sheet}
+
+We now turn from boundary-condition exorcisms to
+propagator-prescription exorcisms, and to the spectral question
+underneath all of them: what, exactly, distinguishes a ghost from an
+ordinary unstable particle with the same complex pole pair? Buoninfante
+\cite{BuoninfanteP1,BuoninfanteP3} gives the sharp QFT answer: only
+the \emph{sheet}. Both have poles at $m^{2}\pm\ii m\Gamma$; the
+unstable particle's pair sits on the second (unphysical) sheet and its
+K\"all\'en--Lehmann representation is a positive density on the real
+axis with sum rule $1=C$ (complete norm transfer to the continuum:
+the particle decays) \cite[Eq.~(34)]{BuoninfanteP3}; the ghost's pair
+sits on the first (physical) sheet and the spectral decomposition
+contains, in addition to a \emph{still-positive} continuum, discrete
+negative-residue complex-pole terms
+$-Z\Delta_{F}(m^{2}+\ii m\Gamma)-Z^{*}\Delta_{F}(m^{2}-\ii m\Gamma)$
+\cite[Eq.~(40)]{BuoninfanteP3}, with sum rule $Z+Z^{*}=1+C$: the
+one-particle component persists \cite[Eq.~(44)]{BuoninfanteP3}. We
+emphasize the precise locus of positivity failure, because it is easy
+to state wrongly: the ghost's continuum is positive; what fails is
+positivity of the \emph{total} spectral measure, through the discrete
+complex-pole part. The two survival regimes arise from two distinct
+mechanisms, and it is worth keeping them separate. A positive
+spectral measure on the real axis gives, by Bochner's theorem, a
+\emph{bounded} amplitude $|A(t)|\le1$---the second-sheet resonance.
+What makes the first-sheet ghost's $|A(t)|$ \emph{unbounded} is not
+sign-indefiniteness as such---a finite signed measure on the real
+axis still gives a bounded $|A(t)|$---but that its spectral support
+includes \emph{complex} energies $m\pm\ii\gamma$ off the real axis,
+whose $\ee^{\pm\gamma t}$ legs make $|A(t)|$ grow, as the divisor will
+now report.
+
+\subsection{The Bochner discriminant}
+
+\begin{proposition}[Pole sheet $\to$ process class]
+\label{prop:bochner}
+Let $A(t)$ be the survival amplitude of a single mode.
+\begin{itemize}
+\item[(i)] (Second sheet; rigorous.) If
+$A(t)=\int\ee^{-\ii Et}\,\dd\mu(E)$ for a positive probability
+measure $\mu$ on $\mathbb{R}$---the case of an ordinary unstable
+particle, whose dressed propagator has a positive spectral
+density---then $A$ is a positive-definite function and Bochner's
+theorem gives $|A(t)|\le A(0)=1$ for all $t$. The two-state survival
+matrix
+\[
+\Gamma(t)=\begin{pmatrix}|A(t)|^{2}&0\\ 1-|A(t)|^{2}&1\end{pmatrix}
+\]
+is then column-stochastic with \emph{no conditioning}: because
+$|A|\le1$, an unconditioned sub-stochastic survival process exists on the
+second sheet whatever the negativity pattern. Divisor negativity over
+$[t_{1},t_{2}]$ occurs iff $|A(t_{2})|>|A(t_{1})|$ (net increase over the
+interval; backflow); its
+magnitude $M_{21}=1-|A(t_{2})|^{2}/|A(t_{1})|^{2}$ is bounded only where
+$\inf|A|>0$ and diverges near an amplitude null. For absolutely continuous
+$\mu$ the Riemann--Lebesgue lemma sends $A(t)\to0$ in amplitude, so the
+negativity is transient \emph{when $|A|$ is eventually monotone} (as for
+the smooth density below)---the transient-indivisibility class of
+\cite{indivisible}; a compactly supported or oscillatory a.c.\ measure
+($\mu$ uniform on an interval, $A\propto\operatorname{sinc}$) instead
+revives backflow at every amplitude null. A measure with atoms likewise
+stays unconditioned ($|A|\le1$) without being transient---a single atom
+over an a.c.\ background can even make $|A|$ eventually monotone
+\emph{increasing} ($\mu=0.7\,\delta_{0}+\rho$ gives
+$A=0.7-0.2\ee^{-t}+0.5\ee^{-2t}$, permanent second-sheet negativity with
+no conditioning). What is invariant is the dichotomy by \emph{boundedness
+of $|A|$}, not the negativity pattern: $|A|\le1$ always admits an
+unconditioned process, while the unbounded $|A|$ of (ii) forces
+conditioning.
+\item[(ii)] (First sheet; mode-level analytic, closed forms
+numerically re-verified.) If the mode dynamics carries a first-sheet
+complex-conjugate pair---eigenfrequencies $m\pm\ii\gamma$,
+$\gamma>0$, the mode realization of Buoninfante's ghost
+pair---then no positive spectral measure exists for $A$, and indeed
+$|A(t)|$ grows like $\cosh(\gamma t)$ on the configuration basis (any
+beable state overlapping the growing leg): since $|A(t)|>1$ at finite
+$t$, \emph{no} unconditioned sub-stochastic survival process exists
+at any coarse-graining. The survival-conditioned dilation
+\eqref{eq:conditioned} is mandatory, and for the dimer realization
+\eqref{eq:dimer} it lands in the terminal class of
+\cite{indivisible}: permanent divisor negativity past
+$t_{c}$ of \eqref{eq:tcfloor}, with the late-time conditioned
+generator pinned at the floor $-(a+\wt)$.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+(i) is Bochner's theorem plus inspection:
+$|A(t)|=|\int\ee^{-\ii Et}\dd\mu|\le\int\dd\mu=1$; column sums of
+$\Gamma(t)$ are $1$; the divisor \eqref{eq:divisor} of the survival
+pair has entries $M_{11}=|A(t_{2})|^{2}/|A(t_{1})|^{2}$ and
+$M_{21}=1-M_{11}$, negative iff $|A|$ increased; Riemann--Lebesgue sends
+$A\to0$ in amplitude, so the revivals decay when $|A|$ is eventually
+monotone (but not for a compactly supported or oscillatory a.c.\ measure,
+whose $|A|$ nulls revive backflow). A quantitative illustration: for the positive
+density $\rho(E)\propto\sqrt{E}\,(1+E)^{-1/2}
+\bigl[(E-m_{0})^{2}+\Gamma_{0}^{2}/4\bigr]^{-1}$
+($m_{0}=3$, $\Gamma_{0}=0.4$), the computed
+$\max_{t}|A(t)|=1.000000$, and the residual backflow episodes are at
+the $10^{-9}$ level (numerical noise), with no growing revival---this particular density is
+essentially monotone; the general argument allows densities with
+sharper thresholds to show visible but decaying revivals, though the
+public script tests only the smooth density above.
+(ii) The growth statement is elementary: with eigenfrequencies
+$m\pm\ii\gamma$ the evolution has singular values
+$\ee^{\pm\gamma t}$ up to bounded factors, so
+$\norm{U(t)}\ge C\ee^{\gamma t}$; on the dimer \eqref{eq:dimer} this
+is exact via \eqref{eq:dimerU}. The computed
+$\max_{t\le6}\norm{\ee^{-\ii Ht}}=1098.9$ at
+$(a,\kappa)=(1.5,1)$. The terminal-class closed forms
+\eqref{eq:tcfloor} are quoted from \cite{indivisible} and re-verified
+here: permanent-negativity onset $0.6400$ on a $0.005$ time grid
+against the closed form $0.6487$, and late-time generator
+off-diagonal $-2.6031$ against the floor $-(a+\wt)=-2.6180$ (both
+discrepancies are finite-difference artifacts that shrink with the
+step). We state part (ii) at mode level: the assertion that the
+\emph{field-theoretic} ghost two-point function has exactly this
+discrete negative-residue structure is Buoninfante's
+\cite[Eqs.~(40),(44)]{BuoninfanteP3}, not re-derived here.
+\end{proof}
+
+\begin{remark}[The classifier crosses at the sheet boundary]
+Sweeping a two-mode model with eigenvalues $3+\ii g_{\mathrm{eff}}$
+and $3-0.4\ii$ across the boundary: for
+$g_{\mathrm{eff}}=-0.4,-0.1,0.0$ the maximal evolution norm is
+$1.000$ (unconditioned, resonance class); at
+$g_{\mathrm{eff}}=+0.1$ it is $20.1$ and at $+0.4$ it is
+$1.6\times10^{5}$ (conditioning mandatory; not terminal---this sweep is
+decoupled). The
+process-class classifier changes exactly at the sheet boundary
+$g_{\mathrm{eff}}=0$---there is no intermediate regime.
+\end{remark}
+
+The slogan form of Proposition~\ref{prop:bochner}:
+\begin{quote}
+\emph{Unstable particles survive unconditioned; ghosts survive only
+conditioned. The pole sheet is readable in the divisor by the \emph{boundedness} of
+the amplitude: an unconditioned process on the second sheet
+($|A|\le1$), and---for the dimer---terminal negativity with a generator
+floor on the first ($|A|$ unbounded).}
+\end{quote}
+This gives the divisor currency an operational meaning directly in
+QFT terms: handed only the survival record of a mode, one can read
+off which sheet its pole pair inhabits---from whether $|A|$ stays
+bounded (second sheet) or grows without bound (first). The reading is
+a converse only within the two-class family above, and for states
+overlapping the growing leg: a signed real-axis measure also keeps
+$|A|$ bounded, and a first-sheet mode probed in a decaying-leg-only
+state leaves a bounded record.
+
+\subsection{The masking law is the terminal-class dimer's cross-population}
+\label{sec:masking}
+
+Buoninfante's second and third papers establish what he calls
+\emph{anti-instability}: in the indefinite-metric theory the ghost
+neither decays (norm conservation forbids negative-norm $\to$
+positive-norm transfer) nor runs away; instead the would-be decay
+manifests as \emph{multi-particle masking}, an overlap with
+multi-particle states that grows as
+$\sinh^{2}(\Gamma t/2)$: the general overlap is his
+\cite[Eq.~(84)]{BuoninfanteP2}, whose at-rest ($\vec p=0$)
+narrow-width form \cite[Eq.~(88)]{BuoninfanteP2} is exactly
+$\sinh^{2}(\Gamma t/2)+O(\Gamma^{2})$, on the timescale $2/\Gamma$; no free
+asymptotic one-particle ghost state exists, and the Feynman ghost
+\emph{appears} to retain a single arrow of causality on shell---the
+source's own hedge, which flags that first-sheet complex-conjugate
+poles could still induce violations.
+
+\begin{proposition}[Masking law $=$ cross-population growth]
+\label{prop:masking}
+For the broken dimer \eqref{eq:dimer}, the cross-population is
+exactly
+\[
+|U_{12}(t)|^{2}=\frac{\kappa^{2}}{\wt^{2}}\,\sinh^{2}(\wt t),
+\]
+by \eqref{eq:dimerU}. Setting $\wt=\Gamma/2$ this is Buoninfante's
+masking law $\sinh^{2}(\Gamma t/2)$ up to the constant prefactor
+$(\kappa/\wt)^{2}$, including the timescale $2/\Gamma$. (The identity
+is exact---algebraic, not fitted.)
+\end{proposition}
+
+The identification says the two formalisms are computing the same
+growth and booking it differently. In Buoninfante's closed,
+indefinite-metric currency, nothing decays and nothing runs away:
+the growth is an overlap, and ``anti-instability'' is the statement
+that the indefinite norm is conserved. In the beable currency of this
+series, the same growth is the reason no unconditioned process
+exists, and conditioning divides it out exactly: \emph{after}
+conditioning, nothing physical grows---which is the conditioned
+transcription of anti-instability. Two bookkeepings, one pole pair,
+one shared closed form. We are careful about scope: Buoninfante's
+masking is an overlap statement in indefinite-metric QFT; our reading
+adds the sample-space price tag and claims nothing about his
+finite-time resummation---what this paper adds is the currency, not a
+new field theory.
+
+%=====================================================================
+\section{A taxonomy of exorcisms and their currencies}
+\label{sec:taxonomy}
+
+Buoninfante's first paper organizes the propagator prescriptions for
+a ghost resonance into an $(a;b,c)$ taxonomy
+\cite[Eqs.~(5)--(6)]{BuoninfanteP1}: $a=-1$ selects the ghost (first
+sheet) and $a=+1$ the non-ghost/unstable particle (second sheet, cf.\
+Section~\ref{sec:sheet}), and $(b,c)$ select how the complex pair is
+routed through the contour. The three standard exorcisms, and the
+unstable-particle control, then line up against the trilemma of
+\cite{choosing}---a coupled-ghost theory keeps at most two of
+\{coupled ghosts, empirical Lorentz invariance, definite
+configurations\}---as follows.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\begin{tabular}{lllll}
+\toprule
+Prescription & Norms & Causal structure & Process reading &
+Currency paid \\
+\midrule
+Feynman ghost & indefinite & causal &
+conditioning mandatory, & sample space \\
+($b=c=+1$) & (odd-ghost $<0$) & &
+terminal class (\S\ref{sec:sheet}) &
+(no beable seat) \\[3pt]
+anti-Feynman & positive & acausal &
+unconditioned, & causal order / \\
+($b=c=-1$) & & (reversed arrow) &
+reversed arrow & Lorentz \\[3pt]
+fakeon & --- & purely virtual &
+no asymptotic state & silence \\
+($b=-c$) & & ($\mathrm{Im}=0$) & to condition &
+(excision) \\[3pt]
+unstable particle & positive & causal &
+unconditioned & none \\
+($a=+1$, 2nd sheet) & & & sub-stochastic & \\
+\bottomrule
+\end{tabular}
+\caption{The $(a;b,c)$ prescription taxonomy of
+\cite{BuoninfanteP1} mapped to the trilemma currencies of
+\cite{choosing}. Every exorcism pays in at least one currency; only
+the genuine second-sheet unstable particle is free.}
+\label{tab:taxonomy}
+\end{table}
+
+Three remarks, in increasing order of contentiousness.
+
+\emph{First}, the Feynman ghost row is
+Proposition~\ref{prop:bochner}(ii) verbatim: keeping the ghost
+coupled, causal, and on the first sheet forfeits the unconditioned
+sample space; the theory survives in the beable currency only as a
+survival-conditioned terminal-class process. This is the
+``exit-the-sample-space'' horn of the trilemma, now anchored in the
+sheet structure rather than asserted.
+
+\emph{Second}, the anti-Feynman row is structurally the
+Donoghue--Menezes route \cite{DonoghueMenezes}: a positive-norm
+\emph{asymptotic spectrum} and a
+unitary $S$-matrix are retained at the cost of microcausality (their
+unstable-ghost loops arrow the ghost propagation backwards). We note
+explicitly that this alignment is ours to draw: Buoninfante's trilogy
+does not itself connect the $(b=c=-1)$ contour routing to the
+``Merlin'' treatment of \cite{DonoghueMenezes}; the alignment is
+between that routing and
+the acausal-but-unitary corner they occupy,
+and it slots into the Lorentz/causal-order column of the trilemma
+table (the currency whose empirical price \cite{instantaneous}
+computes for coupled-ghost vacuum decay).
+
+\emph{Third}, the fakeon row is Anselmi's, and here sits the live
+dispute. Anselmi, Briscese, Calcagni, and Modesto
+\cite{Anselmi2025} argue that among the prescriptions for complex
+poles only the fakeon is viable; Buoninfante's anti-instability
+result argues the Feynman ghost is consistent as it stands
+\cite{BuoninfanteP2,BuoninfanteP3}. Read in
+Table~\ref{tab:taxonomy}, the two camps are not disagreeing about a
+computation---they are pricing in different currencies. The fakeon
+buys consistency with silence: the ghost never appears as an
+asymptotic state, at the price of excising it from the sample space
+altogether (there is nothing left to condition on). Buoninfante's
+Feynman ghost buys consistency with conditioning: the ghost persists
+(sum rule $Z+Z^{*}=1+C$), is masked rather than decayed, and---in our
+transcription---its beable process is survival-conditioned, terminal
+class. Each camp's ``viability'' is consistency in its own currency.
+The trilemma does not adjudicate which currency is the right one to
+pay; it prices both, and this paper's contribution is that the
+\emph{boundary-condition} prices are now numbers
+(Sections~\ref{sec:maldacena}--\ref{sec:sheet}) rather
+than slogans.
+
+%=====================================================================
+\section{Relation to final-state post-selection}
+\label{sec:priorart}
+
+The general idea that a future boundary condition is a
+post-selection is not ours. It is the engine of the
+Horowitz--Maldacena black-hole final-state proposal
+\cite{HorowitzMaldacena}, where a maximally entangled final state at
+the singularity post-selects the interior dynamics; and it has been
+proposed in cosmology, where Anastopoulos reads cosmic acceleration
+itself as a quantum post-selection effect \cite{Anastopoulos2024}.
+The two-state-vector and decoherent-histories traditions provide the
+general formalism. What we have not found anywhere is the
+\emph{intersection} with ghost removal: no reading of Maldacena's
+Neumann condition \cite{Maldacena2011} (or the HLZ variant
+\cite{HLZ}) as a survival-conditioned quantum effect, and no
+computation of the survival/fidelity price of any ghost-removing
+boundary condition. Our scope claims are therefore limited to
+exactly that intersection: (i) the identification of ghost-removal
+boundary conditions as effects in the technical sense, with the
+state-prep/effect split of Section~\ref{sec:effect}; and (ii) the
+quantitative price sheet, Tables~\ref{tab:pricesheet}
+and~\ref{tab:mprime}, with its conformal collapse. Likewise, on the
+prescription side, the pole-sheet/process-class dictionary of
+Proposition~\ref{prop:bochner} and the masking identification of
+Proposition~\ref{prop:masking} are, to our knowledge, new, while the
+spectral inputs are entirely Buoninfante's
+\cite{BuoninfanteP1,BuoninfanteP2,BuoninfanteP3}.
+
+%=====================================================================
+\section{Limitations}
+\label{sec:limitations}
+
+Every caveat below is substantive; none is decorative.
+
+\begin{enumerate}
+\item \emph{The sharp effect is improper.} The exact Neumann
+projection has survival probability zero; all prices are stated for
+the regularized Gaussian family \eqref{eq:Esigma} at fixed
+$\sigma$, with the $\sigma\to0$ asymptotics displayed. The
+$\delta$-scaling---the physical content---is uniform in $\sigma$.
+\item \emph{The quantization is a declared choice.} We price the
+Dirac-normalizable (beable-carrying) quantization of the PU mode
+(Proposition~\ref{prop:vacuum}). The contour-rotated Bender--Mannheim
+quantization \cite{BenderMannheim2008} is a different leg of the
+taxonomy, and the price of the same boundary condition there is a
+separate (open) computation; the answer may differ.
+\item \emph{de~Sitter only; Minkowski is the singular limit.} The
+proxy's clean graviton~$\otimes$~partner split exists only at
+$\delta>0$; flat space is the Jordan-block point where the effect
+$\mathcal{M}=\mathbf{1}\otimes E$ is not even well defined. We treat
+$\delta\to0$ as the singular limit and verify that the price sheet
+detects it (Corollary~\ref{cor:collapse})---that the currency
+diagnoses the obstruction is a feature, but it also bounds the
+method: nothing here prices a flat-space exorcism, because on this
+analysis there is no well-posed one to price.
+\item \emph{No double-counting, and the split is a modeling
+decision.} We count positive frequency as preparation and Neumann as
+the effect. This matches the logical roles in
+\cite{Maldacena2011}, but a reader who insists on counting the
+in-state restriction as part of the removal would obtain a different
+(strictly smaller) survival; our convention is the charitable one.
+\item \emph{Tree level only.} The whole analysis, like the trilemma
+it extends \cite{choosing}, is tree-level. Beyond tree level a
+future-boundary effect inherits the known interaction obstruction of
+final-state proposals \cite{HorowitzMaldacena}---interactions between
+the post-selected sector and spectators degrade the conditioning---%
+and we make no claim there.
+\item \emph{The proxy is declared, not derived.} The detuned PU mode
+with $\delta$ standing for the $\Delta=3/\Delta=2$ splitting is a
+mode-level translation of \cite{Maldacena2011}, adopted for its
+exact solvability. Its qualitative structure (four solutions, the
+$t$-growing partner, the Jordan degeneration at flat space) matches
+the graviton system, and its prediction reproduces the HLZ
+flat-space obstruction; but the numerical prefactors in
+Tables~\ref{tab:pricesheet}--\ref{tab:mprime} are properties of the
+proxy, not of conformal gravity. In particular, where
+\cite{Maldacena2011}'s construction is an exact tree-level identity, the
+proxy delivers a fidelity $F<1$ at $O(1)$ $\delta$ (e.g.\ $F\approx0.80$
+at $\delta=0.5$): the proxy has no counterpart of the renormalization
+step that makes that identity exact, so the $O(1)$ part of the deficit
+is a proxy artifact. Moreover the $\delta\to0$ collapse of the
+\emph{fidelity} specifically is reference-convention-dependent (a
+co-scaling Einstein reference removes it; text after
+Proposition~\ref{prop:delivery}); the convention-free claimed content
+is the survival collapse $p\sim\sigma\sqrt{2\delta}$ and the delivered
+state's absolute width divergence $\alpha^{-1/2}\sim\delta^{-1/2}$.
+\item \emph{One result is a numerical re-verification of closed
+forms.} The terminal-class landing of the conditioned first-sheet
+process uses the critical time and generator floor proved in closed
+form in \cite{indivisible}, re-verified here numerically; it is
+presented at exactly that strength in
+Proposition~\ref{prop:bochner}.
+\end{enumerate}
+
+%=====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+Every exorcism has a price, and the divisor currency makes it
+legible.
+
+Maldacena's future boundary condition, the cleanest ghost removal in
+the literature, is per mode a Gaussian survival effect on a beable
+variable, and its full price sheet is closed form: survival
+$\sigma\sqrt{2\delta}$, Einstein fidelity $2\sqrt{\omega_{2}\delta}$
+(in units $\omega_{1}=1$, against a fixed Einstein reference),
+joint figure of merit linear in the de~Sitter splitting. The
+exorcism is affordable exactly where Maldacena performed it---in
+de~Sitter, at $\delta=O(1)$---and its price diverges at the conformal
+point, which is the flat-space obstruction of Hell, L\"ust, and
+Zoupanos rediscovered as a collapse of the price sheet. Their own
+two-condition variant fixes a canonically conjugate pair and is
+therefore Heisenberg-limited: same leading price, an $O(1)$
+surcharge, and what the surcharge buys is generality (the full
+Einstein solution space) rather than economy. There is no cheap
+version: the cost is set by the exceptional-point degeneration of the
+state itself.
+
+On the propagator side, the pole sheet is readable in the divisor.
+Positive spectral measure---the second-sheet unstable particle---%
+gives $|A(t)|\le1$ by Bochner's theorem and an unconditioned
+sub-stochastic process whose divisor negativity decays when the
+amplitude is eventually monotone decreasing (transient-indivisibility class). The first-sheet ghost pair, whose spectral decomposition
+carries discrete negative-residue complex poles with the persistence
+sum rule $Z+Z^{*}=1+C$, admits no unconditioned process at all:
+conditioning is mandatory; for the dimer realization it is terminal, with the critical time and
+generator floor of the first companion paper. Buoninfante's masking
+law is the \emph{time dependence} of the terminal-class dimer's
+cross-population---the
+pre-conditioning growth that conditioning divides out---up to the
+normalization $(\kappa/\wt)^{2}$; his
+anti-instability and our conditioning are the closed-currency and
+beable-currency descriptions of one growth. And the prescription
+taxonomy---Feynman ghost, anti-Feynman, fakeon---pays out in the three
+trilemma currencies: sample space, causal order, silence. The
+Anselmi--Buoninfante dispute over which prescription is viable is a
+dispute over which currency one is willing to pay in; both sides are
+priced here.
+
+The unifying statement is the one the title promises. A ghost that is
+removed has not been annihilated; it has been \emph{paid for}---%
+conditioned on survival of a boundary effect, or bought out by a
+contour choice or an excision---and the price always shows up in the
+books: as a vanishing survival probability, as a fidelity collapse,
+as an abandoned causal order, or as a sample space with one fewer
+inhabitant. Unstable particles survive unconditioned. Ghosts survive
+only by paying---conditioned, or in another trilemma currency. For the
+boundary-condition exorcisms priced here, that price is now a number.
+
+%=====================================================================
+\phantomsection
+\section*{Author contributions and use of AI}
+\addcontentsline{toc}{section}{Author contributions and use of AI}
+
+This manuscript was produced through a collaboration, directed by the
+author, with the large language model Claude Fable~5 (Anthropic),
+which carried out the technical work: the research program, the
+derivations and proofs, the numerical experiments, the literature
+analysis, and the text, including this statement. J.T.\ posed the
+research direction, provided iterative review, and takes
+responsibility for the decision to circulate. The research notebook
+in the program's public repository records the development of this
+paper's results, including the scoping analyses in which the
+state-preparation/effect split and the Heisenberg-conjugate structure
+of the two-condition scheme were identified before the prices were
+computed.
+
+%=====================================================================
+\phantomsection
+\section*{Code availability}
+\label{sec:code}
+\addcontentsline{toc}{section}{Code availability}
+
+All numerical claims are reproducible from three standalone scripts
+(NumPy/SciPy, seconds to minutes each, controls printed inline) in
+the paper's repository:
+\begin{center}
+\url{https://github.com/embeddetech/p08-exorcised-ghosts}
+\end{center}
+(also archived, with the full program history, in the hub repository
+\url{https://github.com/embeddetech/ghosts-program}):
+\begin{itemize}
+\item \texttt{scripts/p8\_maldacena\_price.py}
+(Section~\ref{sec:maldacena}): vacuum verification, survival and
+fidelity closed forms, the price sheet;
+\item \texttt{scripts/p8\_hlz\_mprime.py}
+(Section~\ref{sec:hlz}): $\mathrm{Var}(O_{2})$, covariance,
+ordering-dependent survival, delivered-state fidelities;
+\item \texttt{scripts/p8\_buoninfante\_map.py}
+(Section~\ref{sec:sheet}): the Bochner bound, the terminal-class
+closed forms, the sheet-crossing sweep.
+\end{itemize}
+
+%=====================================================================
+\begin{thebibliography}{99}\small
+
+\bibitem{indivisible}
+J.~Torkelson,
+\emph{Indivisible stochastic processes for non-Hermitian and
+higher-derivative quantum systems: detailed balance, broken $\PT$
+symmetry, and the explosion of ghosts},
+companion paper (2026),
+\url{https://github.com/embeddetech/p01-indivisible-ghosts}.
+
+\bibitem{instantaneous}
+J.~Torkelson,
+\emph{Ghost vacuum decay as a stochastic process: instantaneous
+states, the boost-orbit measure, and the foliation that ghosts make
+visible},
+companion paper (2026),
+\url{https://github.com/embeddetech/p03-instantaneous-ghosts}.
+
+\bibitem{choosing}
+J.~Torkelson,
+\emph{Conformal gravity must choose: exceptional-point kinematics,
+vacuum decay, and the sample space of Weyl gravity},
+companion paper (2026),
+\url{https://github.com/embeddetech/p05-choosing-ghosts}.
+
+\bibitem{Maldacena2011}
+J.~Maldacena,
+\emph{Einstein gravity from conformal gravity},
+arXiv:1105.5632 (2011).
+
+\bibitem{HLZ}
+A.~Hell, D.~L\"ust, and G.~Zoupanos,
+\emph{On the ghost problem of conformal gravity},
+JHEP \textbf{08} (2023) 168, arXiv:2306.13714.
+
+\bibitem{BuoninfanteP1}
+L.~Buoninfante,
+\emph{Remarks on ghost resonances},
+JHEP \textbf{02} (2025) 186, arXiv:2501.04097.
+
+\bibitem{BuoninfanteP2}
+L.~Buoninfante,
+\emph{Asymptotic quantum dynamics of ghost fields},
+arXiv:2605.29047 (2026).
+
+\bibitem{BuoninfanteP3}
+L.~Buoninfante,
+\emph{Ghosts versus unstable particles in quantum field theory},
+arXiv:2606.18349 (2026).
+
+\bibitem{Anselmi2025}
+D.~Anselmi, F.~Briscese, G.~Calcagni, and L.~Modesto,
+\emph{Amplitude prescriptions in field theories with complex poles},
+JHEP \textbf{05} (2025) 145, arXiv:2503.01841.
+
+\bibitem{DonoghueMenezes}
+J.~F.~Donoghue and G.~Menezes,
+\emph{Unitarity, stability, and loops of unstable ghosts},
+Phys.\ Rev.\ D \textbf{100}, 105006 (2019), arXiv:1908.02416.
+
+\bibitem{HorowitzMaldacena}
+G.~T.~Horowitz and J.~Maldacena,
+\emph{The black hole final state},
+JHEP \textbf{02} (2004) 008, arXiv:hep-th/0310281.
+
+\bibitem{Anastopoulos2024}
+C.~Anastopoulos,
+\emph{Final states in quantum cosmology: cosmic acceleration as a
+quantum postselection effect},
+Phys.\ Rev.\ D \textbf{111}, 064045 (2025), arXiv:2401.07662.
+
+\bibitem{PaisUhlenbeck1950}
+A.~Pais and G.~E.~Uhlenbeck,
+\emph{On field theories with non-localized action},
+Phys.\ Rev.\ \textbf{79}, 145 (1950).
+
+\bibitem{BenderMannheim2008}
+C.~M.~Bender and P.~D.~Mannheim,
+\emph{No-ghost theorem for the fourth-order derivative
+Pais--Uhlenbeck oscillator model},
+Phys.\ Rev.\ Lett.\ \textbf{100}, 110402 (2008), arXiv:0706.0207.
+
+\end{thebibliography}
+
+\end{document}
